@@ -5,7 +5,7 @@ Imagem base para testar aplicação php.
 
 Criar imagem base
 ```sh
-docker build -t grandchef/composer:2.7.4-testing deploy/build/composer
+docker build -t grandchef/composer:2.7.4-testing testing
 ```
 
 Roda o shell na imagem criada
