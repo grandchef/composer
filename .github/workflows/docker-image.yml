@@ -7,7 +7,11 @@ on:
 
     tags:
       - v*
-
+    
+env:
+  IMAGE_NAME_BASE: base
+  IMAGE_NAME_TEST: testing
+  
 jobs:
   login:
     runs-on: ubuntu-latest
@@ -26,32 +30,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Generate version tag
-      run: |
-        IMAGE_ID=${{ github.repository }}
-        # Change all uppercase to lowercase
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-
-        # Strip git ref prefix from version
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        # Strip "v" prefix from tag name
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-        # Use Docker `latest` tag convention
-        [ "$VERSION" == "master" ] && VERSION=latest
 
     - name: Build the composer base image
       run: |
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker build -t $IMAGE_ID:$VERSION base
+        docker build -t $IMAGE_NAME_BASE base
 
     - name: Build the composer testing image
       run: |
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker build -t $IMAGE_ID:$VERSION-testing testing
+        docker build -t $IMAGE_NAME_TEST testing
 
   push:
     needs: [build]
@@ -59,11 +45,22 @@ jobs:
     steps:
       - name: Push images to docker hub
         run: |
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+          IMAGE_ID=${{ github.repository }}
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
           
           echo "Pushing image $IMAGE_ID:$VERSION"
+          docker tag $IMAGE_NAME_BASE $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
           
           echo "Pushing image $IMAGE_ID:$VERSION-testing"
+          docker tag $IMAGE_NAME_TEST $IMAGE_ID:$VERSION-testing
           docker push $IMAGE_ID:$VERSION-testing
