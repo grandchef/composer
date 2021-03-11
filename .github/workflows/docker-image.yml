@@ -43,10 +43,14 @@ jobs:
 
     - name: Build the composer base image
       run: |
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
         docker build -t $IMAGE_ID:$VERSION base
 
     - name: Build the composer testing image
       run: |
+        echo IMAGE_ID=$IMAGE_ID
+        echo VERSION=$VERSION
         docker build -t $IMAGE_ID:$VERSION-testing testing
 
   push:
