@@ -42,10 +42,12 @@ jobs:
         [ "$VERSION" == "master" ] && VERSION=latest
 
     - name: Build the composer base image
-      run: docker build -t "$IMAGE_ID:$VERSION" base
+      run: |
+        docker build -t $IMAGE_ID:$VERSION base
 
     - name: Build the composer testing image
-      run: docker build -t "$IMAGE_ID:$VERSION-testing" testing
+      run: |
+        docker build -t $IMAGE_ID:$VERSION-testing testing
 
   push:
     needs: [build]
