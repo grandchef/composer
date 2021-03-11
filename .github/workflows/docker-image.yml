@@ -7,11 +7,11 @@ on:
 
     tags:
       - v*
-    
+
 env:
   IMAGE_NAME_BASE: base
   IMAGE_NAME_TEST: testing
-  
+
 jobs:
   login:
     runs-on: ubuntu-latest
@@ -33,11 +33,11 @@ jobs:
 
     - name: Build the composer base image
       run: |
-        docker build -t $IMAGE_NAME_BASE base
+        docker build base --tag $IMAGE_NAME_BASE
 
     - name: Build the composer testing image
       run: |
-        docker build -t $IMAGE_NAME_TEST testing
+        docker build testing --tag $IMAGE_NAME_TEST
 
   push:
     needs: [build]
@@ -56,11 +56,11 @@ jobs:
 
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
-          
+
           echo "Pushing image $IMAGE_ID:$VERSION"
           docker tag $IMAGE_NAME_BASE $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-          
+
           echo "Pushing image $IMAGE_ID:$VERSION-testing"
           docker tag $IMAGE_NAME_TEST $IMAGE_ID:$VERSION-testing
           docker push $IMAGE_ID:$VERSION-testing

@@ -1,4 +1,4 @@
-FROM grandchef/composer:2.7.4
+FROM base
 
 RUN apk add --no-cache \
     g++ \
