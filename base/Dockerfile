@@ -1,4 +1,4 @@
-FROM composer:2.0.8
+FROM composer:2.1.14
 
 RUN apk add --no-cache \
     wget \

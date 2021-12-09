@@ -5,17 +5,17 @@ Imagem base para build de aplicação php.
 
 Criar imagem base
 ```sh
-docker build -t grandchef/composer:2.7.4 base
+docker build -t grandchef/composer:2.8.1 base
 ```
 
 Roda o shell na imagem criada
 ```sh
-docker run -it --rm grandchef/composer:2.7.4 /bin/sh
+docker run -it --rm grandchef/composer:2.8.1 /bin/sh
 ```
 
 ## Release
 
 Envia imagem para o hub.docker
 ```sh
-docker push grandchef/composer:2.7.4
+docker push grandchef/composer:2.8.1
 ```
