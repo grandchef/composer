@@ -19,6 +19,7 @@ RUN apk add --no-cache \
     libzip \
     libzip-dev \
     libpq \
+    libgomp \
     postgresql-dev \
     && docker-php-ext-configure gd \
     --with-freetype \
