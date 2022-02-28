@@ -1,4 +1,4 @@
-FROM composer:2.1.14
+FROM composer:2.2.6
 
 RUN apk add --no-cache \
     wget \
@@ -19,8 +19,13 @@ RUN apk add --no-cache \
     libzip \
     libzip-dev \
     libpq \
+    icu \
+    icu-dev \
     libgomp \
     postgresql-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-enable intl \
     && docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
@@ -49,4 +54,5 @@ RUN apk add --no-cache \
     libzip-dev \
     postgresql-dev \
     imagemagick-dev \
+    icu-dev \
     && rm -rf /var/cache/apk/*
