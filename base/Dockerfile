@@ -1,6 +1,7 @@
-FROM composer:2.2.6
+FROM composer:2.5
 
 RUN apk add --no-cache \
+    linux-headers \
     wget \
     unzip \
     autoconf \
